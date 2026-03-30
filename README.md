@@ -33,6 +33,7 @@ Check if works - curl localhost
 In gateaway 
 
 nano /etc/nginx/sites-avaible/loadbalancer
+
 upstream backend {
   ip_hash;
   server 192.168.56.10;
@@ -51,6 +52,7 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
     }
 }
+
 nginx -t - check for good configuration
 ln -s /etc/nginx/sites-avaible /etc/nginx/sites-enabled/
 rm -r /etc/nginx/sites-enabled/default
