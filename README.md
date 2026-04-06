@@ -4,13 +4,13 @@ Step 1 — Install Nginx on web1 and web2
 sudo apt update && sudo apt install nginx -y
 systemctl enable nginx
 
-# web1
+ web1
 echo '<h1>Hello from web1</h1>' | sudo tee /var/www/html/index.html
 
-# web2
+ web2
 echo '<h1>Hello from web2</h1>' | sudo tee /var/www/html/index.html
 
-# verify
+ verify
 curl localhost
 
 Step 2 — Configure Nginx on gateway
@@ -54,14 +54,14 @@ bash# add to /etc/hosts
 192.168.56.10   web1
 192.168.56.11   web2
 
-# test
+ test
 curl http://web1
 curl http://web2
 
-# test load balancing — should alternate between web1 and web2
+ test load balancing — should alternate between web1 and web2
 for i in {1..6}; do curl http://web1; echo; done
 
-Monitoring script 
+# Monitoring script 
 
 #!/bin/bash
 set -Eeuo pipefail
@@ -72,7 +72,6 @@ DATE=$(date "+%Y-%m-%d %H:%M:%S")
 WEB1="http://web1"
 WEB2="http://web2"
 
-# check nginx service
 if systemctl is-active --quiet $SERVICE; then
     echo "$DATE - $SERVICE is running" >> $LOG_FILE
 else
@@ -86,7 +85,6 @@ else
     fi
 fi
 
-# check web nodes
 for URL in $WEB1 $WEB2; do
     if curl --fail --silent --max-time 5 $URL > /dev/null; then
         echo "$DATE - $URL is ok" >> $LOG_FILE
